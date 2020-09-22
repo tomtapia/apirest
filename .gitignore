@@ -27,4 +27,4 @@ blog/bin/
 hs_err_pid*
 
 # Mac folders
-.DS_Store/
+/.DS_Store
