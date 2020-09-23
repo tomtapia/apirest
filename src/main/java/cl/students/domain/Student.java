@@ -1,4 +1,4 @@
-package cl.courses.domain;
+package cl.students.domain;
 
 import java.util.UUID;
 
@@ -10,6 +10,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Pattern;
+
+import cl.courses.domain.Course;
 
 @Entity
 @Table(name = "students")

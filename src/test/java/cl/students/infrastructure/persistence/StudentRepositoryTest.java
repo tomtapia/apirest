@@ -1,4 +1,4 @@
-package cl.courses.infrastructure.persistence;
+package cl.students.infrastructure.persistence;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -15,7 +15,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import cl.courses.domain.Course;
-import cl.courses.domain.Student;
+import cl.students.domain.Student;
+import cl.students.infrastructure.persistence.StudentRepository;
 
 @ExtendWith(SpringExtension.class)
 @DataJpaTest

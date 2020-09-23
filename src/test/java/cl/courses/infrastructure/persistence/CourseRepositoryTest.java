@@ -32,7 +32,7 @@ public class CourseRepositoryTest {
 	}
 
 	@Test
-	public void whenFindByCode_thenReturnCourse() {
+	public void shouldReturnCourseWhenFindByCode() {
 		// given
 		Course calculus = new Course(UUID.randomUUID(), "Calculus 101", "MX11");
 		entityManager.persist(calculus);
