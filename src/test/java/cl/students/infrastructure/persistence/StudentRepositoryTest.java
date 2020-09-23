@@ -16,7 +16,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import cl.courses.domain.Course;
 import cl.students.domain.Student;
-import cl.students.infrastructure.persistence.StudentRepository;
 
 @ExtendWith(SpringExtension.class)
 @DataJpaTest

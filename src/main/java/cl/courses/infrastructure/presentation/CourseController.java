@@ -4,10 +4,12 @@ import java.net.URI;
 import java.util.UUID;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +23,7 @@ import cl.courses.domain.Course;
 import cl.courses.infrastructure.persistence.CourseRepository;
 
 @RestController
+@Validated
 public class CourseController {
 
 	@Autowired
@@ -31,8 +34,8 @@ public class CourseController {
 		return ResponseEntity.ok(courseRepository.findAll(PageRequest.of(page, 10)));
 	}
 
-	@GetMapping("/courses/:id")
-	public ResponseEntity<Course> getCourse(@PathVariable String id) {
+	@GetMapping("/courses/{id}")
+	public ResponseEntity<Course> getCourse(@PathVariable @Min(1) String id) {
 		return ResponseEntity.of(courseRepository.findById(UUID.fromString(id)));
 	}
 
@@ -42,14 +45,14 @@ public class CourseController {
 		return ResponseEntity.created(URI.create(String.format("/courses/%s", course.getId()))).build();
 	}
 
-	@PutMapping("/courses/:id")
+	@PutMapping("/courses/{id}")
 	public ResponseEntity<Object> updateCourse(@PathVariable String id, @Valid @RequestBody Course course) {
 		course.setId(UUID.fromString(id));
 		courseRepository.save(course);
 		return ResponseEntity.ok().build();
 	}
 
-	@DeleteMapping("/courses/:id")
+	@DeleteMapping("/courses/{id}")
 	public ResponseEntity<Object> deleteCourse(@PathVariable String id) {
 		courseRepository.deleteById(UUID.fromString(id));
 		return ResponseEntity.noContent().build();
