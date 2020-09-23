@@ -7,11 +7,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
-import cl.courses.domain.Course;
+import cl.courses.domain.Student;
 
 @Repository
-public interface CourseRepository extends PagingAndSortingRepository<Course, UUID> {
+public interface StudentRepository extends PagingAndSortingRepository<Student, UUID> {
 
-	List<Course> findByCode(String code, Pageable pageable);
+	List<Student> findByRut(String rut, Pageable pageable);
 
 }
