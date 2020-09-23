@@ -18,7 +18,7 @@ public class Course {
 	private UUID id;
 	private String name;
 	@Column(length = 4)
-    @Size(max = 4, message = "Code should not be greater than 4 chars")
+	@Size(max = 4, message = "Code should not be greater than 4 chars")
 	private String code;
 
 	public Course() {
