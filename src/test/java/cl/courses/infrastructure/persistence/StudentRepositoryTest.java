@@ -52,4 +52,19 @@ public class StudentRepositoryTest {
 		assertThat(found.getCourse()).isNotNull();
 		assertThat(found.getCourse().getCode()).isEqualTo(calculus.getCode());
 	}
+
+	@Test
+	public void whenValidRut_thenSaveStudent() {
+		// given
+		Course calculus = new Course(UUID.randomUUID(), "Calculus 101", "MX11");
+		entityManager.persist(calculus);
+		entityManager.flush();
+		Student alex = new Student(UUID.randomUUID(), "1111111-1", "Alex", "Lordop", 18, calculus);
+
+		// when
+		studentRepository.save(alex);
+
+		// then
+		assertThat(alex.getRut()).isNotNull();
+	}
 }
