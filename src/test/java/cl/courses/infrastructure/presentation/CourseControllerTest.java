@@ -2,49 +2,44 @@ package cl.courses.infrastructure.presentation;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.UUID;
-
+import org.json.JSONObject;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.test.context.jdbc.Sql;
 
-import cl.courses.domain.Course;
-import cl.courses.infrastructure.persistence.CourseRepository;
+import cl.shared.presentation.TestHttpHelper;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class CourseControllerTest {
 
-	@Autowired
-	private CourseRepository courseRepository;
-
 	@LocalServerPort
 	private int port;
-
+	@Value("${security.oauth2.client.client-id}")
+	private String clientId;
+	@Value("${security.oauth2.client.client-secret}")
+	private String clientSecret;
 	@Autowired
 	private TestRestTemplate restTemplate;
+	private TestHttpHelper testHttpHelper;
 
-	@Test
-	public void injectedComponentsAreNotNull() {
-		assertThat(courseRepository).isNotNull();
-		assertThat(restTemplate).isNotNull();
+	@BeforeEach
+	public void initHelpers() {
+		this.testHttpHelper = new TestHttpHelper(port, clientId, clientSecret, restTemplate);
 	}
 
 	@Test
+	@Sql({"/import_curses.sql"}) // given
 	public void shouldReturnAllCourses() {
-		// given
-		Course calculus = new Course(UUID.randomUUID(), "Calculus 101", "MX11");
-		courseRepository.save(calculus);
-
 		// when
-//		List<Course> coursesFounds = restTemplate.getForObject("http://localhost:" + port + "/courses", List.class);
-		Object coursesFounds = restTemplate.getForObject("http://localhost:" + port + "/courses", Object.class);
+		JSONObject coursesFounds = testHttpHelper.get("/courses", JSONObject.class);
 
 		// then
 		assertThat(coursesFounds).isNotNull();
-//		assertThat(coursesFounds.size()).isGreaterThan(0);
-//		assertThat(coursesFounds.get(0).getCode()).isEqualTo(calculus.getCode());
 	}
 }

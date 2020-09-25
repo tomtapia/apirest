@@ -4,10 +4,10 @@ import java.net.URI;
 import java.util.UUID;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Min;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import cl.students.domain.Student;
@@ -30,12 +29,12 @@ public class StudentController {
 	private StudentRepository studentRepository;
 
 	@GetMapping("/students")
-	public ResponseEntity<Iterable<Student>> getStudents(@RequestParam(name = "page", required = false) int page) {
-		return ResponseEntity.ok(studentRepository.findAll(PageRequest.of(page, 10)));
+	public ResponseEntity<Iterable<Student>> getStudents(@PageableDefault(size = Integer.MAX_VALUE) Pageable pageable) {
+		return ResponseEntity.ok(studentRepository.findAll(pageable));
 	}
 
 	@GetMapping("/students/{id}")
-	public ResponseEntity<Student> getStudent(@PathVariable @Min(1) String id) {
+	public ResponseEntity<Student> getStudent(@PathVariable(required = true) String id) {
 		return ResponseEntity.of(studentRepository.findById(UUID.fromString(id)));
 	}
 
