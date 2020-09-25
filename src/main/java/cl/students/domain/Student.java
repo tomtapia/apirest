@@ -9,6 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 import cl.courses.domain.Course;
@@ -28,6 +29,7 @@ public class Student {
 	private Integer age;
 	@ManyToOne
 	@JoinColumn(name = "course_id", nullable = false)
+	@NotNull
 	private Course course;
 
 	public Student() {
@@ -36,7 +38,7 @@ public class Student {
 
 	public Student(UUID id,
 			@Pattern(regexp = "/^[0-9]+[-|‐]{1}[0-9kK]{1}$/", message = "RUT should be valid") String rut, String name,
-			String lastName, @Min(value = 18, message = "Age should not be less than 18") Integer age, Course course) {
+			String lastName, @Min(value = 18, message = "Age should not be less than 18") Integer age, @NotNull Course course) {
 		super();
 		this.id = id;
 		this.rut = rut;
